@@ -16,11 +16,15 @@ Using a member initializer list is preferred over assigning values in the body o
     {}
 
 
+You can prevent the compiler from generating an implicit default constructor by defining it as deleted:
+    // Default constructor
+    Box() = delete;
 
 
+Types: 
 
 
-Default Contructor: 
+A. Default Contructor: 
     1. Does not take in any arguments
     2. If a default constructor is not defined explicitly, the compiler does so implicitly
     3. It is a good idea to define the default contructor because: 
@@ -28,3 +32,23 @@ Default Contructor:
         2. If the constructor is declared in the header and defined out-of-line (in a .cc/.cpp file), then the implementation can later be modified with dependent code only needing to be re-linked. Declaring a constructor after the fact necessarily affects the header, requiring recompilation of dependent code
     4. If you rely on an implicit default constructor, be sure to initialize members in the class definition, as shown in the previous example. Without those initializers, the members would be uninitialized and the Volume() call would produce a garbage value. In general, it is good practice to initialize members in this way even when not relying on an implicit default constructor.
 
+
+B. Copy Constructor: 
+    1. A copy constructor initializes an object by copying the member values from an object of the same type. If your class members are all simple types such as scalar values, the compiler-generated copy constructor is sufficient and you do not need to define your own. If your class requires more complex initialization, then you need to implement a custom copy constructor. For example, if a class member is a pointer then you need to define a copy constructor to allocate new memory and copy the values from the other's pointed-to object. The compiler-generated copy constructor simply copies the pointer, so that the new pointer still points to the other's memory location.
+
+    2. Can have any of the following forms: 
+    Box(Box& other); // Avoid if possible--allows modification of other.
+    Box(const Box& other);
+    Box(volatile Box& other);
+    Box(volatile const Box& other);
+
+    // Additional parameters OK if they have default values
+    Box(Box& other, int i = 42, string label = "Box");
+
+    3. When you define a copy constructor, you should also define a copy assignment operator (=). For more information, see Assignment and Copy constructors and copy assignment operators.
+
+    You can prevent your object from being copied by defining the copy constructor as deleted:
+
+    Box (const Box& other) = delete;
+
+    
