@@ -6,10 +6,23 @@ class printData {
       void print(int i) {
         cout << "Printing int: " << i << endl;
       }
-      int print(double  f1, float f2) {
-        cout << "Printing float: " << f1+f2 << endl;
+
+      // Illegal 
+      /* 
+          void print(int i) 
+          {
+            cout << "Printing int: " << i << endl;
+            return 1; 
+          }
+      */ 
+
+      // Legal 
+      int print(int i, int j) 
+      {
+        cout << "Printing int: " << i << endl;
         return 1; 
       }
+
       void print(char* c) {
         cout << "Printing character: " << c << endl;
       }
